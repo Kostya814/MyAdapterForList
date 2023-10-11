@@ -1,6 +1,8 @@
 package com.example.listadapterforlake;
 
-public class Lake {
+import java.io.Serializable;
+
+public class Lake implements Serializable {
     private String Name;
     private int Age;
     private double square;
