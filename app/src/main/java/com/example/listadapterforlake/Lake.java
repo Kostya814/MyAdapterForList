@@ -5,10 +5,14 @@ import java.io.Serializable;
 public class Lake implements Serializable {
     private String Name;
     private int Age;
-    private double square;
-    private double length;
+    private int square;
+    private int length;
 
-    public Lake(String name, int age, double square, double length) {
+    public Lake()
+    {
+
+    }
+    public Lake(String name, int age, int square, int length) {
         Name = name;
         Age = age;
         this.square = square;
@@ -31,19 +35,19 @@ public class Lake implements Serializable {
         Age = age;
     }
 
-    public double getSquare() {
+    public int getSquare() {
         return square;
     }
 
-    public void setSquare(double square) {
+    public void setSquare(int square) {
         this.square = square;
     }
 
-    public double getLength() {
+    public int getLength() {
         return length;
     }
 
-    public void setLength(double length) {
+    public void setLength(int length) {
         this.length = length;
     }
 }

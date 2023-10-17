@@ -1,17 +1,25 @@
 package com.example.listadapterforlake;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -73,6 +81,7 @@ public class BlankFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Button crt = view.findViewById(R.id.createBtn);
         ListView list = view.findViewById(R.id.listExamples);
         Bundle arg;
         arg = getArguments();
@@ -82,14 +91,106 @@ public class BlankFragment extends Fragment {
         AdapterView.OnItemLongClickListener listener = new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                Lake lake = lakes.get((int)id);
-                lakes.remove(lake);
-                adapterLake.notifyDataSetChanged();
-                return false;
+                new AlertDialog.Builder(view.getContext())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Вы уверены?")
+                        .setMessage("Вы хотите удалить эту записть?")
+                        .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Lake lake = lakes.get((int)id);
+                                lakes.remove(lake);
+                                adapterLake.notifyDataSetChanged();
+                            }
+                        }).setNegativeButton("Нет",null).show();
+                return true;
             }
         };
+
+        AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                openDialog(view, i,adapterLake);
+            }
+        };
+        crt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createDialog(view,adapterLake);
+            }
+        });
+        list.setOnItemClickListener(clickListener);
         list.setOnItemLongClickListener(listener);
+    }
+    public void openDialog (View view, long id,AdapterLake adapterLake)
+    {
+        final Dialog dialog = new Dialog(view.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_edit);
+        final EditText et = dialog.findViewById(R.id.et);
+        final EditText et2 = dialog.findViewById(R.id.et2);
+        final EditText et3 = dialog.findViewById(R.id.et3);
+        final EditText et4 = dialog.findViewById(R.id.et4);
+        Lake lake = lakes.get((int) id);
+        et.setText(lake.getName());
+        et2.setText(""+lake.getAge());
+        et3.setText(""+lake.getLength());
+        et4.setText(""+lake.getSquare());
+        Button btnok = (Button) dialog.findViewById(R.id.btnok);
+        btnok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lake.setName(et.getText().toString());
+                lake.setAge(Integer.parseInt(et2.getText().toString()));
+                lake.setLength(Integer.parseInt(et3.getText().toString()));
+                lake.setSquare(Integer.parseInt(et4.getText().toString()));
+                lakes.set((int)id,lake);
+                adapterLake.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        Button btncn = (Button) dialog.findViewById(R.id.btncn);
+        btncn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    public void createDialog(View v,AdapterLake adapterLake)
+    {
+        Lake lake = new Lake();
+        final Dialog dialog = new Dialog(v.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_edit);
+        final EditText et = dialog.findViewById(R.id.et);
+        final EditText et2 = dialog.findViewById(R.id.et2);
+        final EditText et3 = dialog.findViewById(R.id.et3);
+        final EditText et4 = dialog.findViewById(R.id.et4);
+        Button btnok = (Button) dialog.findViewById(R.id.btnok);
+        btnok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lake.setName(et.getText().toString());
+                lake.setAge(Integer.parseInt(et2.getText().toString()));
+                lake.setLength(Integer.parseInt(et3.getText().toString()));
+                lake.setSquare(Integer.parseInt(et4.getText().toString()));
+                lakes.add(lake);
+                adapterLake.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        Button btncn = (Button) dialog.findViewById(R.id.btncn);
+        btncn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

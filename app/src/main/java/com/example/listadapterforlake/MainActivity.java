@@ -30,28 +30,13 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack("blank_fragment_transuctiom");
         fragmentTransaction.commit();
 
-        /*listlakes = findViewById(R.id.listlakes);
-        AdapterLake adapterLake = new AdapterLake(this,R.layout.list_item,lakes);
-        listlakes.setAdapter(adapterLake);
-        AdapterView.OnItemLongClickListener listener = new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Lake lake = lakes.get((int)id);
-                lakes.remove(lake);
-                adapterLake.notifyDataSetChanged();
-                return false;
-            }
-        };
-        listlakes.setOnItemLongClickListener(listener);*/
     }
     public void Init()
     {
-
         lakes.add(new Lake("Енисей",12,200,22));
         lakes.add(new Lake("Мисисипи",12,2030,2332));
         lakes.add(new Lake("Волга",12,200,22123));
         lakes.add(new Lake("Обь",8981,20330,2132));
-
     }
 }
