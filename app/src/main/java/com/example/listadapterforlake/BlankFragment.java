@@ -141,6 +141,10 @@ public class BlankFragment extends Fragment {
         btnok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (et.getText().equals("")) return;
+                if (et2.getText().equals("")) return;
+                if (et3.getText().equals("")) return;
+                if (et4.getText().equals("")) return;
                 lake.setName(et.getText().toString());
                 lake.setAge(Integer.parseInt(et2.getText().toString()));
                 lake.setLength(Integer.parseInt(et3.getText().toString()));
@@ -163,8 +167,7 @@ public class BlankFragment extends Fragment {
     {
         Lake lake = new Lake();
         final Dialog dialog = new Dialog(v.getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+
         dialog.setContentView(R.layout.dialog_edit);
         final EditText et = dialog.findViewById(R.id.et);
         final EditText et2 = dialog.findViewById(R.id.et2);
@@ -174,6 +177,10 @@ public class BlankFragment extends Fragment {
         btnok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (et.getText().equals("")) return;
+                if (et2.getText().equals("")) return;
+                if (et3.getText().equals("")) return;
+                if (et4.getText().equals("")) return;
                 lake.setName(et.getText().toString());
                 lake.setAge(Integer.parseInt(et2.getText().toString()));
                 lake.setLength(Integer.parseInt(et3.getText().toString()));
