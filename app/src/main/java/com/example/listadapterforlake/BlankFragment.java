@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ public class BlankFragment extends Fragment {
     private String mParam2;
     public ArrayList<Lake> lakes;
 
+    public MyViewModel myViewModel;
     public BlankFragment() {
 
     }
@@ -77,15 +79,17 @@ public class BlankFragment extends Fragment {
         // Inflate the layout for this fragment
 
          return inflater.inflate(R.layout.fragment_blank, container, false);
+
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        myViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
         Button crt = view.findViewById(R.id.createBtn);
         ListView list = view.findViewById(R.id.listExamples);
         Bundle arg;
         arg = getArguments();
-        lakes = (ArrayList<Lake>) arg.getSerializable("list");
+        lakes = myViewModel.getLakes();
         AdapterLake adapterLake = new AdapterLake(view.getContext(), R.layout.list_item,lakes);
         list.setAdapter(adapterLake);
         AdapterView.OnItemLongClickListener listener = new AdapterView.OnItemLongClickListener() {

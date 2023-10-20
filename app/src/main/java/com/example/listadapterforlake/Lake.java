@@ -11,7 +11,7 @@ public class Lake implements Serializable {
     public Lake()
     {
 
-    }
+    }s
     public Lake(String name, int age, int square, int length) {
         Name = name;
         Age = age;

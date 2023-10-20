@@ -2,6 +2,7 @@ package com.example.listadapterforlake;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,14 +16,18 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ListView listlakes;
+    public MyViewModel myViewModel;
     ArrayList<Lake> lakes = new ArrayList<Lake>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Init();
+        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
+        myViewModel.setLakes(lakes);
         setContentView(R.layout.activity_main);
         Bundle arg = new Bundle();
         arg.putSerializable("list",lakes);
+
         BlankFragment fragment = new BlankFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragment.setArguments(arg);
