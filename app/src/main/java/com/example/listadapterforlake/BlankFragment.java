@@ -1,8 +1,12 @@
 package com.example.listadapterforlake;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +26,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -39,9 +47,11 @@ public class BlankFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    public ArrayList<Lake> lakes;
+    public ArrayList<Lake> lakes = new ArrayList<>();
+    Gson gs = new Gson();
 
     public MyViewModel myViewModel;
+    public SharedPreferences settings;
     public BlankFragment() {
 
     }
@@ -84,12 +94,15 @@ public class BlankFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        myViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
+        //myViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
         Button crt = view.findViewById(R.id.createBtn);
         ListView list = view.findViewById(R.id.listExamples);
-        Bundle arg;
-        arg = getArguments();
-        lakes = myViewModel.getLakes();
+        //Bundle arg;
+        //arg = getArguments();
+        SharedPreferences settings = getContext().getSharedPreferences("PreferencesName", Context.MODE_PRIVATE);
+        String sharedData;
+        sharedData = settings.getString("KEY_BD","");
+        lakes = gs.fromJson(sharedData,new TypeToken<ArrayList<Lake>>(){}.getType());
         AdapterLake adapterLake = new AdapterLake(view.getContext(), R.layout.list_item,lakes);
         list.setAdapter(adapterLake);
         AdapterView.OnItemLongClickListener listener = new AdapterView.OnItemLongClickListener() {
@@ -198,7 +211,6 @@ public class BlankFragment extends Fragment {
         btncn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 dialog.dismiss();
             }
         });
