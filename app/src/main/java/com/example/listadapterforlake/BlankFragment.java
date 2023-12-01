@@ -12,6 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -95,13 +96,20 @@ public class BlankFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //myViewModel = new ViewModelProvider(getActivity()).get(MyViewModel.class);
-        Button crt = view.findViewById(R.id.createBtn);
-        ListView list = view.findViewById(R.id.listExamples);
+        Button crt = view.findViewById(R.id.addButton);
+        Button stg = view.findViewById(R.id.settingsButton);
+        ListView list = view.findViewById(R.id.listView);
         //Bundle arg;
         //arg = getArguments();
         SharedPreferences settings = getContext().getSharedPreferences("PreferencesName", Context.MODE_PRIVATE);
         String sharedData;
         sharedData = settings.getString("KEY_BD","");
+        stg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSetting();
+            }
+        });
         lakes = gs.fromJson(sharedData,new TypeToken<ArrayList<Lake>>(){}.getType());
         AdapterLake adapterLake = new AdapterLake(view.getContext(), R.layout.list_item,lakes);
         list.setAdapter(adapterLake);
@@ -138,6 +146,13 @@ public class BlankFragment extends Fragment {
         });
         list.setOnItemClickListener(clickListener);
         list.setOnItemLongClickListener(listener);
+    }
+    public void openSetting()
+    {
+       getActivity().getSupportFragmentManager().beginTransaction()
+               .replace(R.id.main_fragment, new SettingsFragment(),"blank_fragment")
+               .addToBackStack("blank_fragment_transuctiom")
+               .commit();
     }
     public void openDialog (View view, long id,AdapterLake adapterLake)
     {
